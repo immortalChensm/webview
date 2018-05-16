@@ -23,6 +23,15 @@ webviw_config = {
 }
 
 
+#数据库配置
+dbconfig = {
+    "host":"127.0.0.1",
+    "port":"3306",
+    "user":"root",
+    "pwd":"123456",
+    "dbname":"webim",
+    "charset":"utf8"
+}
 class Api():
     def __init__(self):
         self.AppKey = webviw_config['appkey']

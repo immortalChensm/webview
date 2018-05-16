@@ -1,5 +1,6 @@
 window.addEventListener("load",function () {
 
+
     //创建账号
     document.getElementById("register").addEventListener("click",function (e) {
 
@@ -8,22 +9,21 @@ window.addEventListener("load",function () {
         data['name']  = document.getElementsByName("name")[0].value;
         data['mobile']= document.getElementsByName("mobile")[0].value;
 
-        xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function (ev) {
-            if(xhr.readyState==4){
-                if (xhr.status==200){
-                    alert(xhr.responseText);
-                }
-            }
+        ajax({
+            url:"http://127.0.0.1:8090/createaccid",
+            async:true,
+            data:{
+                "accid":data['accid'],
+                "name":data['name'],
+                "mobile":data['mobile']
+            },
+            success:function(response){
+                alert(response);
+            },
+            error:function(xhr){
 
-        };
-
-        xhr.onerror = function (ev) {
-            alert("ajax请求错误");
-        };
-        xhr.open("post","http://127.0.0.1:8090/createaccid",true);
-        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;charset=utf-8");
-        xhr.send("accid="+data['accid']+"&name="+data['name']+"&mobile="+data['mobile']);
+            },
+        });
 
     })
 
