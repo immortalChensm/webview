@@ -4,76 +4,43 @@ import config
 from model import db
 
 from tornado.web import RequestHandler
-class IndexHandler(RequestHandler):
 
-    def get(self, *args, **kwargs):
-        self.write("hello,laobiao")
-
-
-class createaccidHandler(RequestHandler):
-    def get(self, *args, **kwargs):
-        '''
-
-        api = config.Api()
-
-        url = "https://api.netease.im/nimserver/user/create.action"
-        #url = "http://www.app.com/app/checksum.php"
-        user_account = "jackcsm"
-        header = {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-            "AppKey":api.AppKey,
-            "Nonce":api.noncestr,
-            "CurTime":str(api.CurTime),
-            "CheckSum":api.checksumstr
-        }
-        data = {
-            "accid":user_account,
-            "name":"杰克陈"
-        }
-
-        print(header)
-        result = requests.post(url,headers=header,data=data)
-        #print(result.json())
-        self.write(result.text)
-
-        '''
-        model = db.db()
-        model.get()
-
-
-        #self.render("createaccid.html")
-
+class SendmsgHandler(RequestHandler):
     def post(self, *args, **kwargs):
 
-        data = {}
-        data['accid'] = self.get_body_argument("accid")
-        data['name']  = self.get_body_argument("name")
-        data['mobile']= self.get_body_argument("mobile")
-        if not data['accid']:
-            self.write(dict(status=-1,msg='accid值不可为空'))
-        elif not data['name']:
-            self.write(dict(status=-1,msg='昵称不可为空'))
-        elif not data['mobile']:
-            self.write(dict(status=-1,msg='手机号要写'))
+        import jpush
 
-        api = config.Api()
+        # __jpush = jpush.JPush('ba5645ed9b17309f7abb116b', '02947521a9540e832c8d0a6d')
+        __jpush = jpush.JPush('ba930456252a3ac98c746dc7', 'b5ae4b7a4ff60e5c9045b278')
 
-        url = "https://api.netease.im/nimserver/user/create.action"
-        # url = "http://www.app.com/app/checksum.php"
-        user_account = "jackcsm"
-        header = {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-            "AppKey": api.AppKey,
-            "Nonce": api.noncestr,
-            "CurTime": str(api.CurTime),
-            "CheckSum": api.checksumstr
-        }
-        data = {
-            "accid": user_account,
-            "name": "杰克陈"
-        }
+        useridList = self.get_body_argument("userid")
+        msg        = self.get_body_argument("msg")
 
-        print(header)
-        result = requests.post(url, headers=header, data=data)
-        # print(result.json())
-        self.write(result.text)
+        print(useridList)
+        print(msg)
+        '''
+        
+         push = __jpush.create_push()
+        alias = ["57", "65"]
+
+        alias1 = {"alias": alias}
+        push.audience = jpush.audience(
+            # jpush.tag("tag1", "tag2"),
+            alias1
+        )
+
+        push.notification = jpush.notification(alert="由py推送的消息来自趣喝茶商城1")
+        push.platform = jpush.all_
+
+        try:
+            response = push.send()
+        except common.Unauthorized:
+            raise common.Unauthorized("Unauthorized")
+        except common.APIConnectionException:
+            raise common.APIConnectionException("conn error")
+        except common.JPushFailure:
+            print("JPushFailure")
+        except:
+            print("Exception")
+        '''
+

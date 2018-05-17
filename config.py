@@ -5,7 +5,7 @@ import hashlib
 import math
 
 config  = {
-    "port":8090
+    "port":9888
 }
 
 settings = {
